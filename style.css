@@ -257,9 +257,13 @@ body {
   border-bottom: 1px solid #ddd;
 }
 .checkout-bottom {
-  border-top: 1px solid #e6e6e6;
-  padding: 10px;
-  background: #fafafa;
+  background: #fff;
+  border-top: 3px solid #ddd;
+  padding: 30px;          /* More space around the whole bottom section */
+  min-height: 275px;      /* Forces the bottom area to take up more of the screen */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .summary {
   display: flex;
@@ -270,7 +274,17 @@ body {
 }
 .actions {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 20px;              /* More space between the buttons */
+  margin-top: 15px;
+}
+.actions button {
+  width: 100%;
+  min-height: 60px;      /* Massive buttons for easy tapping */
+  font-size: 18px;        /* Huge text on buttons */
+  font-weight: 800;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 .print-btn {
   flex: 1;
