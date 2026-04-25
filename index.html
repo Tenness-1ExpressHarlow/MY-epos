@@ -105,7 +105,7 @@
       </div>
 
       <div class="actions">
-        <button class="print-btn">PRINT</button>
+        <button class="print-btn" onclick="printDirect()">PRINT RECEIPT</button>
         <button class="delete-btn" onclick="clearCart()">DELETE</button>
         <button class="pay-btn" onclick="openPayModal()">PAY</button>
       </div>
@@ -122,58 +122,6 @@ let cart = [];
 let currentEditingIndex = null;
 
 
-function printDirect() {
-  if (cart.length === 0) return;
-
-  let total = cart.reduce((sum, item) => sum + item.price, 0);
-  
-  // 1. Build the Receipt Text
-  let receiptText = "      CHICKEN SHOP\n";
-  receiptText += "--------------------------------\n";
-  receiptText += `Date: ${new Date().toLocaleString()}\n\n`;
-
-  cart.forEach(item => {
-    let name = item.name.substring(0, 22).padEnd(22, ' ');
-    let price = "£" + item.price.toFixed(2);
-    receiptText += `${name} ${price.padStart(9, ' ')}\n`;
-  });
-
-  receiptText += "--------------------------------\n";
-  receiptText += `TOTAL: ${("£" + total.toFixed(2)).padStart(25, ' ')}\n\n\n\n\n`;
-
-  // 2. Wrap it in the RawBT JSON format
-  const printData = {
-    attributes: {
-      type: "rawbt",
-      version: 1
-    },
-    commands: [
-      {
-        command: "printText",
-        text: receiptText
-      },
-      {
-        command: "lineFeed",
-        count: 5
-      }
-    ]
-  };
-
-  // 3. Connect to the WebSocket on your Sunmi (Port 40213)
-  const socket = new WebSocket("ws://localhost:40213/");
-
-  socket.onopen = function() {
-    // Send the JSON string, not plain text
-    socket.send(JSON.stringify(printData));
-    console.log("JSON sent to RawBT");
-    setTimeout(() => socket.close(), 500);
-  };
-
-  socket.onerror = function(err) {
-    console.error("Connection error:", err);
-    alert("Printer not found. Is the WS API switch ON?");
-  };
-}
 
 // NEW: Initialize daily totals
 // Replace your old dailySales line with this:
@@ -206,6 +154,50 @@ function toggleMenu() {
   }
 }
 
+function printDirect() {
+    if (cart.length === 0) {
+        alert("Cart is empty!");
+        return;
+    }
+
+    // Alert to verify the button is actually working
+    console.log("Attempting to print...");
+
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    let receiptText = "      CHICKEN SHOP\n";
+    receiptText += "--------------------------------\n";
+    cart.forEach(item => {
+        let name = item.name.substring(0, 20).padEnd(20, ' ');
+        let price = "£" + item.price.toFixed(2);
+        receiptText += `${name} ${price.padStart(10, ' ')}\n`;
+    });
+    receiptText += "--------------------------------\n";
+    receiptText += `TOTAL: £${total.toFixed(2)}\n\n\n\n`;
+
+    // The JSON format for RawBT
+    const data = {
+        attributes: { type: "rawbt", version: 1 },
+        commands: [
+            { command: "printText", text: receiptText }
+        ]
+    };
+
+    const socket = new WebSocket("ws://127.0.0.1:40213/");
+
+    socket.onopen = function() {
+        socket.send(JSON.stringify(data));
+        alert("Sent to printer!"); // If you see this, the code reached the app!
+        setTimeout(() => socket.close(), 500);
+    };
+
+    socket.onerror = function(err) {
+        console.error(err);
+        alert("Could not connect to RawBT. Check if WS API is still green.");
+    };
+}
+
+// Ensure this is at the very bottom of your script
+document.querySelector(".print-btn").onclick = printDirect;
 // Update your existing 3-line button to call toggleMenu instead
 function goToSales() {
   // 1. Update the numbers from our daily record
@@ -275,20 +267,7 @@ function addToCart(name, price) {
   cart.push({ name: name, price: price, mods: [] });
   updateCheckout();
 }
-// 2. THE EVENT LISTENER AT THE VERY BOTTOM
-// This tells the browser: "Now that you know what printDirect is, 
-// link it to the button with the class 'print-btn'."
-document.querySelector(".print-btn").onclick = printDirect;
 
-window.onload = function() {
-    const printBtn = document.querySelector(".print-btn");
-    if (printBtn) {
-        printBtn.onclick = printDirect;
-        console.log("Printer button linked successfully!");
-    } else {
-        console.error("Could not find a button with class 'print-btn'");
-    }
-};
 function removeItem(index) {
   cart.splice(index, 1);
   updateCheckout();
