@@ -81,20 +81,7 @@ body {
     border-radius: 1px;
 }
 
-.actions {
-    display: flex;
-    justify-content: space-around; /* Keeps buttons evenly spaced */
-    align-items: center;
-    
-    /* REDUCE THESE TO SHRINK THE BOX */
-    padding: 10px;         /* Smaller inner gap */
-    width: 90%;            /* Or a specific width like 400px */
-    max-width: 500px;      /* Prevents it from getting too wide on the D3 Pro */
-    margin: 0 auto;        /* Centers the box on the screen */
-    
-    background-color: #ffffff; /* Your grey color */
-    border-radius: 10px;
-}
+
 .customer-label {
     color: white;
     font-size: 12px;      /* Small text */
