@@ -160,22 +160,29 @@ function printDirect() {
         return;
     }
 
-    let total = 0;
-    let receiptText = "      CHICKEN SHOP\n";
+    // 1. ESC/POS Command to set Code Page 850 (Fixes £ instead of ¥)
+    let receiptText = "\x1B\x74\x03"; 
+    
+    // 2. Header
+    receiptText += "      TENNESSEE EXPRESS\n"; // Added in front
+    receiptText += "         CHICKEN SHOP\n";
     receiptText += "================================\n";
     receiptText += `Date: ${new Date().toLocaleString()}\n`;
     receiptText += "--------------------------------\n";
-    let currencySymbol = "£"; // <--- CHANGE THIS TO YOUR CURRENCY (€, SR, $, etc.)
-    // 1. Loop through cart items
+
+    let total = 0;
+
+    // 3. Loop through items and their modifications
     cart.forEach(item => {
+        // Main Item Name and Price
         let name = item.name.substring(0, 20).padEnd(20, ' ');
-        let price = item.price.toFixed(2);
-        receiptText += `${name} £${price.padStart(8, ' ')}\n`;
+        let price = "£" + item.price.toFixed(2);
+        receiptText += `${name} ${price.padStart(10, ' ')}\n`;
         
-        // 2. Check for modifications and add them to receipt
+        // ADDED: Modification Logic
         if (item.mods && item.mods.length > 0) {
             item.mods.forEach(mod => {
-                // Indent mods so they look different from main items
+                // Indented with a dash for clarity
                 receiptText += `  - ${mod}\n`;
             });
         }
@@ -183,13 +190,13 @@ function printDirect() {
         total += item.price;
     });
 
-    // 3. Footer and Total
+    // 4. Footer and Total
     receiptText += "--------------------------------\n";
     receiptText += `TOTAL:          £${total.toFixed(2).padStart(15, ' ')}\n`;
     receiptText += "================================\n";
     receiptText += "\n   Thank you for your order!\n\n\n\n\n";
 
-    // 4. Send to RawBT
+    // 5. Send to RawBT via the Intent Link
     const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
     window.location.href = "rawbt:base64," + base64Data;
 }
