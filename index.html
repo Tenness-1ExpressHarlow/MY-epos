@@ -155,31 +155,41 @@ function toggleMenu() {
 }
 
 function printDirect() {
-    if (cart.length === 0) return;
+    if (cart.length === 0) {
+        alert("Cart is empty!");
+        return;
+    }
 
     let total = 0;
-    let currencySymbol = "£"; // <--- CHANGE THIS TO YOUR CURRENCY (€, SR, $, etc.)
-
     let receiptText = "      CHICKEN SHOP\n";
+    receiptText += "================================\n";
+    receiptText += `Date: ${new Date().toLocaleString()}\n`;
     receiptText += "--------------------------------\n";
 
+    // 1. Loop through cart items
     cart.forEach(item => {
         let name = item.name.substring(0, 20).padEnd(20, ' ');
-        // We use the currencySymbol variable here
-        let price = currencySymbol + item.price.toFixed(2); 
-        receiptText += `${name} ${price.padStart(10, ' ')}\n`;
+        let price = item.price.toFixed(2);
+        receiptText += `${name} £${price.padStart(8, ' ')}\n`;
         
-        if (item.mods) {
-            item.mods.forEach(mod => { receiptText += `  - ${mod}\n`; });
+        // 2. Check for modifications and add them to receipt
+        if (item.mods && item.mods.length > 0) {
+            item.mods.forEach(mod => {
+                // Indent mods so they look different from main items
+                receiptText += `  - ${mod}\n`;
+            });
         }
+        
         total += item.price;
     });
 
+    // 3. Footer and Total
     receiptText += "--------------------------------\n";
-    // And here for the final total
-    receiptText += `TOTAL:          ${currencySymbol}${total.toFixed(2).padStart(15, ' ')}\n`;
-    receiptText += "\n\n\n\n\n";
+    receiptText += `TOTAL:          £${total.toFixed(2).padStart(15, ' ')}\n`;
+    receiptText += "================================\n";
+    receiptText += "\n   Thank you for your order!\n\n\n\n\n";
 
+    // 4. Send to RawBT
     const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
     window.location.href = "rawbt:base64," + base64Data;
 }
