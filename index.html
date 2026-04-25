@@ -165,7 +165,7 @@ function printDirect() {
     receiptText += "================================\n";
     receiptText += `Date: ${new Date().toLocaleString()}\n`;
     receiptText += "--------------------------------\n";
-
+    let currencySymbol = "£"; // <--- CHANGE THIS TO YOUR CURRENCY (€, SR, $, etc.)
     // 1. Loop through cart items
     cart.forEach(item => {
         let name = item.name.substring(0, 20).padEnd(20, ' ');
