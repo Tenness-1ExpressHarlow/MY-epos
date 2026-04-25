@@ -158,7 +158,7 @@ function printDirect() {
     if (cart.length === 0) return;
 
     let total = 0;
-    let currencySymbol = "$"; // <--- CHANGE THIS TO YOUR CURRENCY (€, SR, $, etc.)
+    let currencySymbol = "£"; // <--- CHANGE THIS TO YOUR CURRENCY (€, SR, $, etc.)
 
     let receiptText = "      CHICKEN SHOP\n";
     receiptText += "--------------------------------\n";
@@ -183,6 +183,7 @@ function printDirect() {
     const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
     window.location.href = "rawbt:base64," + base64Data;
 }
+
 // Ensure this is at the very bottom of your script
 document.querySelector(".print-btn").onclick = printDirect;
 // Update your existing 3-line button to call toggleMenu instead
