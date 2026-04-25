@@ -259,9 +259,9 @@ async function resetDay() {
 function createBtn(name, price) {
   return `
     <button class="product-item" onclick="addToCart('${name}', ${price})">
-      <div style="display:flex; flex-direction:column; align-items:center; gap:5px;">
-        <span style="font-size:16px;">${name}</span>
-        <span style="font-size:14px; color:#cc0000; font-weight:bold;">£${price.toFixed(2)}</span>
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;">
+        <span style="font-size:20px !important; font-weight:bold;">${name}</span>
+        <span style="font-size:18px !important; color:#cc0000; font-weight:bold;">£${price.toFixed(2)}</span>
       </div>
     </button>`;
 }
@@ -410,7 +410,7 @@ function openCategory(category) {
     content = `${createBtn('Fries Reg', 2.00)} ${createBtn('Fries Lrg', 3.00)} ${createBtn('Cheesy Chips Reg', 4.00)}${createBtn('Cheesy Chips Lrg', 5.00)} ${createBtn('Potato Wedges Reg', 3.50)} ${createBtn('Potato Wedges Lrg', 4.00)} ${createBtn('Curly Fries Reg', 3.50)} ${createBtn('Curly Fries Lrg', 4.00)}`;
   }
   else if (category === "Kids Meals") {
-    content = `${createBtn('Kids 3 Chicken Strip ', 4.00)} ${createBtn('Kids 3 Chicken Strip Meal', 5.00)} ${createBtn('Kids 12 PCS Chicken Popcorn', 4.50)} ${createBtn('Kids 12 PCS Chicken Popcorn Meal', 5.50)} ${createBtn('Kids Steak Burger ', 4.50)} ${createBtn('Kids Steak Burger Meal', 5.50)}${createBtn('Kids Strips Burger ', 4.00)} ${createBtn('Kids Strips Burger Meal ', 5.00)} ${createBtn('Kids Cheese Burger ', 4.00)} ${createBtn('Kids Cheese Burger Meal', 5.00)} ${createBtn('Kids 4 Nuggets ', 4.00)} ${createBtn('Kids 4 Nuggets Meal', 5.00)}`;
+    content = `${createBtn('Kids 3 Chicken Strip ', 4.00)} ${createBtn('Kids 3 Chicken Strip Meal', 5.00)} ${createBtn('Kids 12 PCS Chicken Popcorn', 4.50)} ${createBtn('Kids 12 PCS Chicken Popcorn Meal', 5.50)} ${createBtn('Kids Steak Burger ', 4.50)} ${createBtn('Kids Steak Burger Meal', 5.50)}${createBtn('Kids Strip Burger ', 4.00)} ${createBtn('Kids Strip Burger Meal ', 5.00)} ${createBtn('Kids Cheese Burger ', 4.00)} ${createBtn('Kids Cheese Burger Meal', 5.00)} ${createBtn('Kids 4 Nuggets ', 4.00)} ${createBtn('Kids 4 Nuggets Meal', 5.00)}`;
   }
   else if (category === "Sauces/Dips") {
     content = `${createBtn('Burger', 0.30)} ${createBtn('Mayo', 0.30)} ${createBtn('BBQ', 0.30)}${createBtn('Chili', 0.30)}${createBtn('Sweet Chili', 0.30)}${createBtn('Ketchup', 0.30)}`;

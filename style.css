@@ -123,28 +123,29 @@ body {
 
 
 .product-item {
-  min-height: 170px;          /* INCREASED to fit bigger text */
+  min-height: 100px;          /* INCREASED to fit bigger text */
   background: white;
   color: #111;
   border: none;
   border-radius: 10px;
-  font-size: 3000px;            /* INCREASED from 18px for readability */
+  font-size: 28px;            /* INCREASED from 18px for readability */
   font-weight: 700;
   line-height: 1.2;           /* ADDED to keep wrapped text neat */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 15px;
+  padding: 20px;
   cursor: pointer;
   transition: 0.15s ease-in-out;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   word-wrap: break-word; 
   hyphens: auto;
+  width: 225px
 }
 .product-item {
   font-size: 100px !important; /* Forces the browser to use this size */
-  min-height: 200px !important; 
+  min-height: 100px !important; 
   font-weight: 850 !important;
 }
 
@@ -181,10 +182,11 @@ body {
 /* 3. The grid for the buttons themselves */
 .products {
   display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 15px;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 10px;
   width: 100%;
   padding: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   box-sizing: border-box;
 }
 
@@ -340,9 +342,7 @@ body {
 /* LAYOUT */
 .layout {
   display: flex;
-  height: 100vh;
   width: 100%;
-  overflow: hidden;
 }
 
 /* PAGE CONTENT */
