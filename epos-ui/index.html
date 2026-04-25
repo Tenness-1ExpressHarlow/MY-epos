@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EPOS</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      // Replace "YOUR_PUBLIC_KEY" with the key from your EmailJS dashboard
+      emailjs.init("tqSAvpak8WvGHf2oM");
+   })();
+</script>
+</head>
+
+<body>
+<div id="sideMenu" style="position:fixed; top:0; left:-250px; width:250px; height:100%; background:#39326C; z-index:20001; transition: 0.3s; padding-top: 60px; box-shadow: 5px 0 15px rgba(0,0,0,0.3);">
+  
+  <button onclick="toggleMenu()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:30px; cursor:pointer;">&times;</button>
+
+  <div style="display:flex; flex-direction:column; gap:20px; padding-left:30px;">
+    <a href="#" onclick="goHome(); toggleMenu();" style="color:white; text-decoration:none; font-size:24px; font-family:sans-serif; font-weight:bold;">Home</a>
+    <a href="#" onclick="goToSales(); toggleMenu();" style="color:white; text-decoration:none; font-size:24px; font-family:sans-serif; font-weight:bold;">Summary</a>
+  </div>
+</div>
+
+<div id="menuShadow" onclick="toggleMenu()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:20000;"></div>
+<div class="layout">
+
+  <!-- LEFT SIDE (everything except checkout) -->
+  <div class="page">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+
+      <div class="top-right">
+
+        <button class="menu-btn" onclick="toggleMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
+        </button>
+
+        <img src="logo.png" class="logo">
+
+      </div>
+
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-content">
+
+      <div class="sub-bar">
+        <button class="home-btn" onclick="goHome()">Home</button>
+
+      </div>
+
+      <!-- PRODUCT GRID (ADDED HERE) -->
+      <div class="product-grid" id="productGrid">
+
+    <button class="product-tile red" onclick="openCategory('Wings')">Wings</button>
+    <button class="product-tile red" onclick="openCategory('Chicken')">Chicken</button>
+    <button class="product-tile red" onclick="openCategory('Strips')">Strips</button>
+
+    <button class="product-tile blue" onclick="openCategory('Burgers')">Burgers</button>
+    <button class="product-tile blue" onclick="openCategory('Wraps')">Wraps</button>
+
+    <button class="product-tile yellow" onclick="openCategory('Combo Meals')">Combo Meals</button>
+    <button class="product-tile grey" onclick="openCategory('Fries')">Fries</button>
+
+    <button class="product-tile brown" onclick="openCategory('BBQ')">BBQ</button>
+    <button class="product-tile brown" onclick="openCategory('Peri Peri')">Peri Peri</button>
+
+    <button class="product-tile orange" onclick="openCategory('Mixed/Family Bucket Deals')">Mixed/Family Bucket Deals</button>
+    <button class="product-tile orange" onclick="openCategory('Starters and Extras')">Starters and Extras</button>
+    <button class="product-tile orange" onclick="openCategory('Kids Meals')">Kids Meals</button>
+
+    <button class="product-tile cyan" onclick="openCategory('Drinks')" >Drinks</button>
+
+    <button class="product-tile cyan" onclick="openCategory('Sauces')">Sauces and Sachet</button>
+    
+    <button class="product-tile green" onclick="openCategory('Offer(12-4)')">Offer(12-4)</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDE (CHECKOUT) -->
+  <div class="checkout-panel">
+
+    <div class="checkout-header">
+      <h2>Checkout</h2>
+    </div>
+
+    <div class="items">
+      <!-- items will go here -->
+    </div>
+
+    <!-- BOTTOM SECTION -->
+    <div class="checkout-bottom">
+
+      <div class="summary">
+        <div class="item-count">Items: 0</div>
+        <div class="total">Total: £0.00</div>
+      </div>
+
+      <div class="actions">
+        <button class="print-btn">PRINT</button>
+        <button class="delete-btn" onclick="clearCart()">DELETE</button>
+        <button class="pay-btn" onclick="openPayModal()">PAY</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+let originalGrid = "";
+let cart = [];
+let currentEditingIndex = null;
+
+
+// NEW: Initialize daily totals
+// Replace your old dailySales line with this:
+let dailySales = JSON.parse(localStorage.getItem("dailySales")) || { 
+  total: 0, 
+  count: 0, 
+  cash: 0, 
+  card: 0 
+};
+
+window.onload = function () {
+  originalGrid = document.getElementById("productGrid").innerHTML;
+};
+
+function goHome() {
+  document.getElementById("productGrid").innerHTML = originalGrid;
+}
+// --- SIDEBAR NAVIGATION LOGIC ---
+
+function toggleMenu() {
+  const menu = document.getElementById("sideMenu");
+  const shadow = document.getElementById("menuShadow");
+
+  if (menu.style.left === "0px") {
+    menu.style.left = "-250px"; // Hide it
+    shadow.style.display = "none";
+  } else {
+    menu.style.left = "0px"; // Slide it out
+    shadow.style.display = "block";
+  }
+}
+
+// Update your existing 3-line button to call toggleMenu instead
+function goToSales() {
+  // 1. Update the numbers from our daily record
+  document.getElementById("sumTotal").innerText = "£" + dailySales.total.toFixed(2);
+  document.getElementById("sumCard").innerText = "£" + dailySales.card.toFixed(2);
+  document.getElementById("sumCash").innerText = "£" + dailySales.cash.toFixed(2);
+
+  // 2. Show the summary page
+  document.getElementById("summaryPage").style.display = "block";
+}
+function closeSummary() {
+  // Hide the summary page to return to the POS
+  document.getElementById("summaryPage").style.display = "none";
+}
+function resetDay() {
+  if (confirm("This will wipe all sales for today. Are you sure?")) {
+    dailySales = { total: 0, count: 0, cash: 0, card: 0 };
+    
+    // CLEAR BROWSER STORAGE
+    localStorage.removeItem("dailySales");
+    
+    goToSales(); // Refresh the display
+    alert("Totals reset to £0.00");
+  }
+}
+async function resetDay() {
+  if (confirm("This will email the report and wipe all sales. Are you sure?")) {
+    
+    // 1. Prepare the data for the email
+    const templateParams = {
+      total_sales: "£" + dailySales.total.toFixed(2),
+      cash_sales: "£" + dailySales.cash.toFixed(2),
+      card_sales: "£" + dailySales.card.toFixed(2),
+      date: new Date().toLocaleString()
+    };
+
+    try {
+      // 2. Send the email 
+      // Replace "YOUR_SERVICE_ID" and "YOUR_TEMPLATE_ID" with your EmailJS IDs
+      await emailjs.send('service_iietyup', 'template_rrzeeit', templateParams);
+      alert("Report sent successfully!");
+
+      // 3. Reset the data ONLY after the email is sent
+      dailySales = { total: 0, count: 0, cash: 0, card: 0 };
+      localStorage.removeItem("dailySales");
+      goToSales(); 
+      alert("Totals reset to £0.00");
+
+    } catch (error) {
+      console.error("Email failed...", error);
+      alert("Failed to send email. Totals were NOT reset.");
+    }
+  }
+}
+// Helper to create buttons with Name + Price
+function createBtn(name, price) {
+  return `
+    <button class="product-item" onclick="addToCart('${name}', ${price})">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:5px;">
+        <span style="font-size:16px;">${name}</span>
+        <span style="font-size:14px; color:#cc0000; font-weight:bold;">£${price.toFixed(2)}</span>
+      </div>
+    </button>`;
+}
+
+function addToCart(name, price) {
+  cart.push({ name: name, price: price, mods: [] });
+  updateCheckout();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  updateCheckout();
+}
+
+function clearCart() {
+  cart = [];
+  updateCheckout();
+}
+
+function updateCheckout() {
+  const cartItemsDiv = document.querySelector(".items");
+  const itemCountDiv = document.querySelector(".item-count");
+  const totalPriceDiv = document.querySelector(".total");
+
+  cartItemsDiv.innerHTML = "";
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price;
+    let modsDisplay = item.mods.length > 0 ? `<div style="font-size:12px; color:red; font-style:italic;">${item.mods.join(", ")}</div>` : "";
+
+    cartItemsDiv.innerHTML += `
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee; background:#fff; margin-bottom:5px;">
+        <div style="display:flex; flex-direction:column;">
+          <span style="font-weight:bold; color:#000;">${item.name}</span>
+          ${modsDisplay}
+          <span style="font-size:14px; color:#444;">£${item.price.toFixed(2)}</span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button onclick="openMod(${index})" style="background:none; border:none; font-size:20px; cursor:pointer;">✏️</button>
+          <button onclick="removeItem(${index})" style="background:none; border:none; font-size:20px; cursor:pointer;">🗑️</button>
+        </div>
+      </div>`;
+  });
+
+  itemCountDiv.innerText = "Items: " + cart.length;
+  totalPriceDiv.innerText = "Total: £" + total.toFixed(2);
+}
+
+// CUSTOMIZATION
+function openMod(index) {
+  currentEditingIndex = index;
+  document.getElementById("modItemName").innerText = "Modify: " + cart[index].name;
+  document.getElementById("customModal").style.display = "block";
+}
+
+function closeMod() {
+  document.getElementById("customModal").style.display = "none";
+}
+
+function addMod(tag) {
+  if (currentEditingIndex !== null) {
+    cart[currentEditingIndex].mods.push(tag);
+    updateCheckout();
+    closeMod();
+  }
+}
+
+// PAYMENT
+function openPayModal() {
+  if (cart.length === 0) { alert("Cart is empty!"); return; }
+  let total = cart.reduce((sum, item) => sum + item.price, 0);
+  document.getElementById("payTotalDisplay").innerText = "£" + total.toFixed(2);
+  document.getElementById("payModal").style.display = "flex";
+}
+
+function closePayModal() {
+  document.getElementById("payModal").style.display = "none";
+}
+
+function finalizeSale(method) {
+  let orderTotal = cart.reduce((sum, item) => sum + item.price, 0);
+
+  // Update the object
+  dailySales.total += orderTotal;
+  if (method === 'CASH') dailySales.cash += orderTotal;
+  if (method === 'CARD') dailySales.card += orderTotal;
+
+  // SAVE TO BROWSER STORAGE
+  localStorage.setItem("dailySales", JSON.stringify(dailySales));
+
+  alert("Sale Complete via " + method);
+  cart = [];
+  updateCheckout();
+  closePayModal();
+  goHome();
+}
+
+// CATEGORIES WITH ALL PRODUCTS & PRICES
+function openCategory(category) {
+  const grid = document.getElementById("productGrid");
+  let content = "";
+
+  if (category === "Wings") {
+    content = `${createBtn('6 Hot Wings', 5.00)} ${createBtn('6 Wings Meal', 6.50)}`;
+  } 
+  else if (category === "Chicken") {
+    content = `${createBtn('2PCS Chicken', 4.00)} ${createBtn('2PCS Meal', 6.00)} ${createBtn('3PCS Chicken', 5.00)} ${createBtn('3PCS Meal', 7.00)} ${createBtn('4PCS Chicken', 7.00)} ${createBtn('4PCS Chicken Meal', 9.00)}`;
+  }
+  else if (category === "Strips") {
+    content = `${createBtn('1 PC Strip', 1.00)} ${createBtn('4PCS Strip Meal', 6.50)} ${createBtn('5PCS Strip Meal', 7.50)}`;
+  }
+  else if (category === "Burgers") {
+    content = `${createBtn('Fillet Burger', 5.50)} ${createBtn('Fillet Burger Meal', 6.50)} ${createBtn('1/4 Pounder ', 6.50)} ${createBtn('1/4 Pounder Meal', 7.50)} ${createBtn('1/2 Pounder', 6.50)}${createBtn('1/2 Pounder Meal', 6.50)}${createBtn('Tower Burger', 6.50)}${createBtn('Tower Burger Meal', 6.50)}${createBtn('Zinger Burger', 5.50)} ${createBtn('Zinger Burger Meal', 6.50)}  ${createBtn('Double Fillet Burger', 6.50)} ${createBtn('Double Fillet Meal', 9.50)}`;
+  }
+  else if (category === "Wraps") {
+    content = `${createBtn('Chicken Wrap', 5.50)} ${createBtn('Chicken Wrap Meal', 7.00)}`;
+  }
+  else if (category === "Combo Meals") {
+    content = `${createBtn('Combo 1', 7.50)} ${createBtn('Combo 2', 7.50)} ${createBtn('Combo 3', 7.50)}`;
+  }
+  else if (category === "BBQ") {
+    content = `${createBtn('6 BBQ Wings', 6.00)} ${createBtn('6 BBQ Wings Meal', 7.00)} ${createBtn('1PCS BBQ Chicken', 3.50)} ${createBtn('2PCS BBQ Chicken Meal', 6.50)} ${createBtn('4PCS BBQ Chicken Meal', 9.50)} ${createBtn('BBQ Chicken Burger ', 6.00)}${createBtn('BBQ Burger Meal', 7.00)} ${createBtn('6 BBQ Strips', 6.50)} ${createBtn('6 BBQ Strips Meal', 7.50)} ${createBtn('BBQ Wrap', 6.00)} ${createBtn('BBQ Wrap Meal', 7.50)} ${createBtn('BBQ Strip Burger', 4.50)}${createBtn('BBQ Strip Burger Meal', 5.50)}`;
+  }
+  else if (category === "Peri Peri") {
+    content = `${createBtn('6 Peri Wings', 6.00)} ${createBtn('1/4 Chicken Rice', 9.00)} ${createBtn('6 Strips Meal', 8.50)}`;
+  }
+  else if (category === "Mixed/Family Bucket Deals") {
+    content = `${createBtn('Mixed Bucket 1', 24.00)} ${createBtn('Wings Bucket', 20.00)} ${createBtn('Family Bucket 1', 19.00)}`;
+  }
+  else if (category === "Starters and Extras") {
+    content = ` ${createBtn('Chilli Cheese Bites 8pcs', 4.50)} ${createBtn('Garlic Mushroom 8pcs', 3.00)} ${createBtn('Garlic Bread 4pcs', 3.00)} ${createBtn('Mozzarella Sticks 6pcs', 4.00)} ${createBtn('Onion Rings 8pcs', 3.50)} ${createBtn('Corn on the Cob', 2.50)} ${createBtn('Sweet Chilli Bites 6pcs', 3.50)} ${createBtn('Battered Sausage', 3.00)} ${createBtn('Hash Brown', 1.50)} ${createBtn('Kebab Roll (Ch/Lmb)', 3.00)} ${createBtn('Coleslaw Reg', 1.50)} ${createBtn('Coleslaw Lrg', 2.00)} ${createBtn('BBQ Beans Reg', 1.50)} ${createBtn('BBQ Beans Lrg', 2.00)} ${createBtn('Doughnuts', 1.00)} ${createBtn('Fudge Cake', 3.00)} ${createBtn('Strawberry Cheesecake', 3.00)} ${createBtn('Apple Pie', 2.00)} ${createBtn('Ice Cream', 5.50)}   `;
+  }
+  else if (category === "Fries") {
+    content = `${createBtn('Fries Reg', 2.00)} ${createBtn('Fries Lrg', 3.00)} ${createBtn('Cheesy Chips Reg', 4.00)}${createBtn('Cheesy Chips Lrg', 5.00)} ${createBtn('Potato Wedges Reg', 3.50)} ${createBtn('Potato Wedges Lrg', 4.00)} ${createBtn('Curly Fries Reg', 3.50)} ${createBtn('Curly Fries Lrg', 4.00)}`;
+  }
+  else if (category === "Kids Meals") {
+    content = `${createBtn('K-Strips Meal', 5.00)} ${createBtn('K-Cheese Meal', 5.00)} ${createBtn('K-4 Nuggets Meal', 5.00)}`;
+  }
+  else if (category === "Sauces") {
+    content = `${createBtn('Ketchup', 0.00)} ${createBtn('Mayo', 0.00)} ${createBtn('Burger Sauce', 0.00)}`;
+  }
+  else if (category === "Drinks") {
+    content = `${createBtn('Can Drink', 1.00)} ${createBtn('Water', 1.00)} ${createBtn('1.5L Bottle', 3.00)}`;
+  }
+  else if (category === "Offer(12-4)") {
+    content = `${createBtn('Lunch Deal 1', 4.50)} ${createBtn('Lunch Deal 2', 5.50)}`;
+  }
+
+  grid.innerHTML = `<div class="category-screen"><div class="category-header">${category}</div><div class="products">${content}</div></div>`;
+}
+function clearCart() {
+  if (confirm("Are you sure you want to clear the current order?")) {
+    cart = [];
+    updateCheckout();
+  }
+}
+</script>
+<div id="summaryPage" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#39326C; z-index:5000; padding:40px; box-sizing:border-box; font-family: sans-serif;">
+  
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h1 style="color:white; margin:0; font-size: 32px;">Daily Summary</h1>
+    <button onclick="closeSummary()" style="background:#cc0000; color:white; border:none; padding:10px 30px; font-size:18px; border-radius:10px; cursor:pointer; font-weight:bold;">BACK TO POS</button>
+  </div>
+
+  <div style="background:white; width:100%; height:calc(100% - 100px); border-radius:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; box-sizing:border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    
+    <div style="text-align:center; width:100%; max-width:600px;">
+      <div style="margin-bottom:40px;">
+        <span style="font-size:24px; color:#555;">Grand Total Sales</span>
+        <div id="sumTotal" style="font-size:100px; font-weight:bold; color:#27ae60;">£0.00</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; border-top: 2px solid #eee; margin-top:20px; padding-top:40px;">
+        <div style="background:#f9f9f9; padding:30px; border-radius:15px;">
+          <span style="font-size:20px; color:#555;">Card Total</span>
+          <div id="sumCard" style="font-size:45px; font-weight:bold; color:#4B43A6;">£0.00</div>
+        </div>
+        <div style="background:#f9f9f9; padding:30px; border-radius:15px;">
+          <span style="font-size:20px; color:#555;">Cash Total</span>
+          <div id="sumCash" style="font-size:45px; font-weight:bold; color:#4B43A6;">£0.00</div>
+        </div>
+      </div>
+
+      <button onclick="resetDay()" style="margin-top:50px; background:none; border:2px solid #cc0000; color:#cc0000; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold;">Reset Daily Totals</button>
+    </div>
+
+  </div>
+</div>
+<div id="customModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#39326C; z-index:10000; padding:40px; box-sizing:border-box;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+    <h1 id="modItemName" style="color:white; margin:0; font-family: sans-serif;">Modify Item</h1>
+    <button onclick="closeMod()" style="background:#cc0000; color:white; border:none; padding:15px 30px; font-size:20px; border-radius:10px; cursor:pointer;">DONE</button>
+  </div>
+  
+  <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px;">
+    <button class="mod-btn" onclick="addMod('No Mayo')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Mayo</button>
+    <button class="mod-btn" onclick="addMod('No Ketchup')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Ketchup</button>
+    <button class="mod-btn" onclick="addMod('No Lettuce')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Lettuce</button>
+    <button class="mod-btn" onclick="addMod('No Burger Sauce')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Burger Sauce</button>
+  </div>
+</div>
+
+<div id="payModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10001; align-items:center; justify-content:center;">
+  <div style="background:white; width:500px; padding:50px; border-radius:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align:center; font-family: sans-serif;">
+    <h1 style="color:#333; font-size: 20px; margin:0;">Total Amount</h1>
+    <div id="payTotalDisplay" style="font-size: 70px; font-weight: bold; color: #000; margin: 20px 0 40px 0;">£0.00</div>
+    
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:40px;">
+      <button onclick="finalizeSale('CASH')" style="background-color:#4B43A6; color:white; border:none; padding:20px; font-size:22px; font-weight:bold; border-radius:10px; cursor:pointer;">CASH</button>
+      <button onclick="finalizeSale('CARD')" style="background-color:#4B43A6; color:white; border:none; padding:20px; font-size:22px; font-weight:bold; border-radius:10px; cursor:pointer;">CARD</button>
+    </div>
+
+    <button onclick="closePayModal()" style="background-color:#cc0000; color:white; border:none; padding:12px 30px; font-size:16px; font-weight:bold; border-radius:8px; cursor:pointer;">CLOSE</button>
+  </div>
+  
+</div>
+
+</body>
+</html>
