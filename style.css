@@ -66,6 +66,8 @@ body {
   box-sizing: border-box;
   align-content: start;
 }
+
+
 .hide-text {
     color: transparent !important;
     user-select: none; /* Prevents people from highlighting invisible text */
@@ -134,14 +136,14 @@ body {
 
 
 .product-item {
-  /* Remove width: 100% !important; */
-  min-height: 120px;
+  min-height: 170px;          /* INCREASED to fit bigger text */
   background: white;
   color: #111;
   border: none;
   border-radius: 10px;
-  font-size: 18px; /* Slightly smaller font ensures text doesn't wrap weirdly */
+  font-size: 3000px;            /* INCREASED from 18px for readability */
   font-weight: 700;
+  line-height: 1.2;           /* ADDED to keep wrapped text neat */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,10 +152,15 @@ body {
   cursor: pointer;
   transition: 0.15s ease-in-out;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  /* ... your existing code ... */
-  word-wrap: break-word; /* Ensures long words don't break the box */
+  word-wrap: break-word; 
   hyphens: auto;
 }
+.product-item {
+  font-size: 100px !important; /* Forces the browser to use this size */
+  min-height: 200px !important; 
+  font-weight: 850 !important;
+}
+
 .product-item:hover {
   background: #f2f2f2;
 }
