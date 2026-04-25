@@ -160,31 +160,32 @@ function printDirect() {
         return;
     }
 
-    // 1. Format the receipt text
-    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    // 1. Initialize the receipt and the total variable
+    let total = 0;
     let receiptText = "      CHICKEN SHOP\n";
+    receiptText += "================================\n";
+    receiptText += `Date: ${new Date().toLocaleString()}\n`;
     receiptText += "--------------------------------\n";
-    receiptText += `Date: ${new Date().toLocaleString()}\n\n`;
 
+    // 2. Loop through cart and calculate total
     cart.forEach(item => {
         let name = item.name.substring(0, 20).padEnd(20, ' ');
-        let price = "£" + item.price.toFixed(2);
-        receiptText += `${name} ${price.padStart(10, ' ')}\n`;
+        let price = item.price.toFixed(2);
+        receiptText += `${name} £${price.padStart(8, ' ')}\n`;
+        
+        // This line adds the price to the running total
+        total += item.price;
     });
 
+    // 3. Add the Footer with the Final Total
     receiptText += "--------------------------------\n";
-    receiptText += `TOTAL: £${total.toFixed(2)}\n\n\n\n\n`;
+    receiptText += `TOTAL:          £${total.toFixed(2).padStart(15, ' ')}\n`;
+    receiptText += "================================\n";
+    receiptText += "\n   Thank you for your order!\n\n\n\n\n";
 
-    // 2. Encode for the "Magic Link"
-    // btoa = Base64 encoding (what RawBT wants)
+    // 4. Send to RawBT using the method that worked
     const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
-
-    // 3. The Direct hand-off link
-    // This tells Android: "Hey RawBT, take this base64 string and print it"
-    const rawbtLink = "rawbt:base64," + base64Data;
-
-    // 4. Trigger the print
-    window.location.href = rawbtLink;
+    window.location.href = "rawbt:base64," + base64Data;
 }
 
 // Ensure this is at the very bottom of your script
