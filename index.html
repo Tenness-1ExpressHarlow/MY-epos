@@ -155,15 +155,42 @@ function toggleMenu() {
 }
 
 function printDirect() {
-    if (cart.length === 0) return;
-    
-    let total = cart.reduce((sum, item) => sum + item.price, 0);
-    let receiptText = "      CHICKEN SHOP\n--------------------------------\n";
-    // ... add your cart loop here ...
-    receiptText += `TOTAL: £${total.toFixed(2)}\n\n\n\n`;
+    // 1. Check if the cart has items
+    if (cart.length === 0) {
+        alert("The checkout is empty!");
+        return;
+    }
 
-    // This bypasses the WebSocket and sends the data directly to the RawBT app
-    window.location.href = "rawbt:base64," + btoa(unescape(encodeURIComponent(receiptText)));
+    console.log("Printing items:", cart); // This shows in your browser inspect tool
+
+    let total = 0;
+    let receiptText = "      CHICKEN SHOP\n";
+    receiptText += "--------------------------------\n";
+    receiptText += `Date: ${new Date().toLocaleString()}\n\n`;
+
+    // 2. Loop through the ACTUAL cart items
+    cart.forEach(item => {
+        let name = item.name.substring(0, 20).padEnd(20, ' ');
+        let price = "£" + item.price.toFixed(2);
+        receiptText += `${name} ${price.padStart(10, ' ')}\n`;
+        total += item.price; // Add to the total
+    });
+
+    receiptText += "--------------------------------\n";
+    receiptText += `TOTAL: ${("£" + total.toFixed(2)).padStart(22, ' ')}\n\n\n\n\n`;
+
+    // 3. Send to RawBT (using the Base64 method that worked for you)
+    const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
+    const printJob = {
+        "attributes": { "type": "rawbt", "version": 1 },
+        "commands": [{ "command": "printBase64", "data": base64Data }]
+    };
+
+    const socket = new WebSocket("ws://127.0.0.1:40213/");
+    socket.onopen = function() {
+        socket.send(JSON.stringify(printJob));
+        setTimeout(() => socket.close(), 500);
+    };
 }
 
 // Ensure this is at the very bottom of your script
