@@ -365,6 +365,12 @@ function openCategory(category) {
 
   grid.innerHTML = `<div class="category-screen"><div class="category-header">${category}</div><div class="products">${content}</div></div>`;
 }
+function clearCart() {
+  if (confirm("Are you sure you want to clear the current order?")) {
+    cart = [];
+    updateCheckout();
+  }
+}
 </script>
 <div id="summaryPage" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#39326C; z-index:5000; padding:40px; box-sizing:border-box; font-family: sans-serif;">
   
