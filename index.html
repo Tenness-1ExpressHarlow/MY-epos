@@ -275,7 +275,20 @@ function addToCart(name, price) {
   cart.push({ name: name, price: price, mods: [] });
   updateCheckout();
 }
+// 2. THE EVENT LISTENER AT THE VERY BOTTOM
+// This tells the browser: "Now that you know what printDirect is, 
+// link it to the button with the class 'print-btn'."
+document.querySelector(".print-btn").onclick = printDirect;
 
+window.onload = function() {
+    const printBtn = document.querySelector(".print-btn");
+    if (printBtn) {
+        printBtn.onclick = printDirect;
+        console.log("Printer button linked successfully!");
+    } else {
+        console.error("Could not find a button with class 'print-btn'");
+    }
+};
 function removeItem(index) {
   cart.splice(index, 1);
   updateCheckout();
