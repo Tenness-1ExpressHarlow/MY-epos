@@ -155,16 +155,12 @@ function toggleMenu() {
 }
 
 function printDirect() {
-    if (cart.length === 0) {
-        alert("Cart is empty!");
-        return;
-    }
+    if (cart.length === 0) return;
 
-    // 1. ESC/POS Command to set Code Page 850 (Fixes £ instead of ¥)
-    let receiptText = "\x1B\x74\x03"; 
+    // Use \xA3 - this is the hexadecimal code for the Pound sign in most thermal printers
+    const POUND = "\xA3"; 
     
-    // 2. Header
-    receiptText += "      TENNESSEE EXPRESS\n"; // Added in front
+    let receiptText = "      TENNESSEE EXPRESS\n";
     receiptText += "         CHICKEN SHOP\n";
     receiptText += "================================\n";
     receiptText += `Date: ${new Date().toLocaleString()}\n`;
@@ -172,35 +168,34 @@ function printDirect() {
 
     let total = 0;
 
-    // 3. Loop through items and their modifications
     cart.forEach(item => {
-        // Main Item Name and Price
         let name = item.name.substring(0, 20).padEnd(20, ' ');
-        let price = "£" + item.price.toFixed(2);
+        // Use the POUND constant here
+        let price = POUND + item.price.toFixed(2);
         receiptText += `${name} ${price.padStart(10, ' ')}\n`;
         
-        // ADDED: Modification Logic
         if (item.mods && item.mods.length > 0) {
             item.mods.forEach(mod => {
-                // Indented with a dash for clarity
                 receiptText += `  - ${mod}\n`;
             });
         }
-        
         total += item.price;
     });
 
-    // 4. Footer and Total
     receiptText += "--------------------------------\n";
-    receiptText += `TOTAL:          £${total.toFixed(2).padStart(15, ' ')}\n`;
+    // Use POUND constant here too
+    receiptText += `TOTAL:          ${POUND}${total.toFixed(2).padStart(15, ' ')}\n`;
     receiptText += "================================\n";
     receiptText += "\n   Thank you for your order!\n\n\n\n\n";
 
-    // 5. Send to RawBT via the Intent Link
-    const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
+    // IMPORTANT: We use 'latin1' encoding instead of 'utf-8' for the base64 conversion
+    // This ensures the \xA3 character doesn't get corrupted
+    const base64Data = btoa(unescape(encodeURIComponent(receiptText).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+        return String.fromCharCode('0x' + p1);
+    })));
+
     window.location.href = "rawbt:base64," + base64Data;
 }
-
 // Ensure this is at the very bottom of your script
 document.querySelector(".print-btn").onclick = printDirect;
 // Update your existing 3-line button to call toggleMenu instead
