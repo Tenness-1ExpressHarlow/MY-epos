@@ -122,6 +122,59 @@ let cart = [];
 let currentEditingIndex = null;
 
 
+function printDirect() {
+  if (cart.length === 0) return;
+
+  let total = cart.reduce((sum, item) => sum + item.price, 0);
+  
+  // 1. Build the Receipt Text
+  let receiptText = "      CHICKEN SHOP\n";
+  receiptText += "--------------------------------\n";
+  receiptText += `Date: ${new Date().toLocaleString()}\n\n`;
+
+  cart.forEach(item => {
+    let name = item.name.substring(0, 22).padEnd(22, ' ');
+    let price = "£" + item.price.toFixed(2);
+    receiptText += `${name} ${price.padStart(9, ' ')}\n`;
+  });
+
+  receiptText += "--------------------------------\n";
+  receiptText += `TOTAL: ${("£" + total.toFixed(2)).padStart(25, ' ')}\n\n\n\n\n`;
+
+  // 2. Wrap it in the RawBT JSON format
+  const printData = {
+    attributes: {
+      type: "rawbt",
+      version: 1
+    },
+    commands: [
+      {
+        command: "printText",
+        text: receiptText
+      },
+      {
+        command: "lineFeed",
+        count: 5
+      }
+    ]
+  };
+
+  // 3. Connect to the WebSocket on your Sunmi (Port 40213)
+  const socket = new WebSocket("ws://localhost:40213/");
+
+  socket.onopen = function() {
+    // Send the JSON string, not plain text
+    socket.send(JSON.stringify(printData));
+    console.log("JSON sent to RawBT");
+    setTimeout(() => socket.close(), 500);
+  };
+
+  socket.onerror = function(err) {
+    console.error("Connection error:", err);
+    alert("Printer not found. Is the WS API switch ON?");
+  };
+}
+
 // NEW: Initialize daily totals
 // Replace your old dailySales line with this:
 let dailySales = JSON.parse(localStorage.getItem("dailySales")) || { 
