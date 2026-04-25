@@ -156,49 +156,14 @@ function toggleMenu() {
 
 function printDirect() {
     if (cart.length === 0) return;
-
-    let total = cart.reduce((sum, item) => sum + item.price, 0);
     
-    let receiptText = "      CHICKEN SHOP\n";
-    receiptText += "--------------------------------\n";
-    receiptText += `Date: ${new Date().toLocaleString()}\n\n`;
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    let receiptText = "      CHICKEN SHOP\n--------------------------------\n";
+    // ... add your cart loop here ...
+    receiptText += `TOTAL: £${total.toFixed(2)}\n\n\n\n`;
 
-    cart.forEach(item => {
-        let name = item.name.substring(0, 20).padEnd(20, ' ');
-        let price = "£" + item.price.toFixed(2);
-        receiptText += `${name} ${price.padStart(10, ' ')}\n`;
-    });
-
-    receiptText += "--------------------------------\n";
-    receiptText += `TOTAL: ${("£" + total.toFixed(2)).padStart(22, ' ')}\n\n\n\n\n`;
-
-    // New flatter structure for RawBT
-    const printJob = {
-        "attributes": {
-            "type": "rawbt",
-            "version": 1
-        },
-        "commands": [
-            {
-                "command": "printText",
-                "text": receiptText
-            }
-        ]
-    };
-
-    const socket = new WebSocket("ws://127.0.0.1:40213/");
-
-    socket.onopen = function() {
-        // Log it so you can see it in the browser console
-        console.log("Sending JSON:", JSON.stringify(printJob));
-        socket.send(JSON.stringify(printJob));
-        // Give the socket a bit more time before closing
-        setTimeout(() => socket.close(), 1000);
-    };
-
-    socket.onerror = function(err) {
-        alert("Printer connection failed.");
-    };
+    // This bypasses the WebSocket and sends the data directly to the RawBT app
+    window.location.href = "rawbt:base64," + btoa(unescape(encodeURIComponent(receiptText)));
 }
 
 // Ensure this is at the very bottom of your script
