@@ -64,3 +64,4 @@ function openCategory(category) {
     </div>
   `;
 }
+document.querySelector('.back-btn').classList.add('hide-text');

@@ -66,6 +66,41 @@ body {
   box-sizing: border-box;
   align-content: start;
 }
+.hide-text {
+    color: transparent !important;
+    user-select: none; /* Prevents people from highlighting invisible text */
+}
+.nav-divider {
+    width: 2px;               /* Thickness of the line */
+    height: 30px;             /* Height of the line (adjust to match button height) */
+    background-color: white;  /* The barrier color */
+    margin: 0 15px;           /* Space on the left and right of the line */
+    opacity: 0.8;             /* Makes it slightly subtle so it's not too harsh */
+    border-radius: 1px;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-around; /* Keeps buttons evenly spaced */
+    align-items: center;
+    
+    /* REDUCE THESE TO SHRINK THE BOX */
+    padding: 10px;         /* Smaller inner gap */
+    width: 90%;            /* Or a specific width like 400px */
+    max-width: 500px;      /* Prevents it from getting too wide on the D3 Pro */
+    margin: 0 auto;        /* Centers the box on the screen */
+    
+    background-color: #ffffff; /* Your grey color */
+    border-radius: 10px;
+}
+.customer-label {
+    color: white;
+    font-size: 12px;      /* Small text */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: -5px;     /* Pulls it slightly closer to the button above */
+    margin-bottom: 5px;   /* Space before the next button */
+}
 
 .product-tile {
   aspect-ratio: 1 / 1;

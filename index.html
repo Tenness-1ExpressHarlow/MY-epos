@@ -80,7 +80,7 @@
 
     <button class="product-tile cyan" onclick="openCategory('Drinks')" >Drinks</button>
 
-    <button class="product-tile cyan" onclick="openCategory('Sauces')">Sauces and Sachet</button>
+    <button class="product-tile cyan" onclick="openCategory('Sauces/Dips')">Sauces/Dips</button>
     
     <button class="product-tile green" onclick="openCategory('Offer(12-4)')">Offer(12-4)</button>
       </div>
@@ -143,6 +143,10 @@ window.onload = function () {
 function goHome() {
   document.getElementById("productGrid").innerHTML = originalGrid;
 }
+function goback() {
+ document.getElementById("productGrid").innerHTML = originalGrid;
+ 
+}
 // --- SIDEBAR NAVIGATION LOGIC ---
 
 function toggleMenu() {
@@ -191,7 +195,10 @@ function printDirect() {
     const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
     window.location.href = "rawbt:base64," + base64Data;
 }
-
+function goBack() {
+    // If you just want to go back to the main menu, call goHome
+    goHome();
+}
 // Ensure this is at the very bottom of your script
 document.querySelector(".print-btn").onclick = printDirect;
 // Update your existing 3-line button to call toggleMenu instead
@@ -351,6 +358,7 @@ function finalizeSale(method) {
   updateCheckout();
   closePayModal();
   goHome();
+  
 }
 
 // CATEGORIES WITH ALL PRODUCTS & PRICES
@@ -377,13 +385,13 @@ function openCategory(category) {
     content = `${createBtn('Combo 1', 7.50)} ${createBtn('Combo 2', 7.50)} ${createBtn('Combo 3', 7.50)}`;
   }
   else if (category === "BBQ") {
-    content = `${createBtn('6 BBQ Wings', 6.00)} ${createBtn('6 BBQ Wings Meal', 7.00)} ${createBtn('1PCS BBQ Chicken', 3.50)} ${createBtn('2PCS BBQ Chicken Meal', 6.50)} ${createBtn('4PCS BBQ Chicken Meal', 9.50)} ${createBtn('BBQ Chicken Burger ', 6.00)}${createBtn('BBQ Burger Meal', 7.00)} ${createBtn('6 BBQ Strips', 6.50)} ${createBtn('6 BBQ Strips Meal', 7.50)} ${createBtn('BBQ Wrap', 6.00)} ${createBtn('BBQ Wrap Meal', 7.50)} ${createBtn('BBQ Strip Burger', 4.50)}${createBtn('BBQ Strip Burger Meal', 5.50)}`;
+    content = `${createBtn('6 BBQ Wings', 6.00)} ${createBtn('6 BBQ Wings Meal', 7.00)} ${createBtn('6 BBQ Wings Meal', 7.00)}${createBtn('1PCS BBQ Chicken', 3.50)} ${createBtn('2PCS BBQ Chicken Meal', 6.50)} ${createBtn('4PCS BBQ Chicken Meal', 9.50)} ${createBtn('BBQ Chicken Burger ', 6.00)}${createBtn('BBQ Burger Meal', 7.00)} ${createBtn('6 BBQ Strips', 6.50)} ${createBtn('6 BBQ Strips Meal', 7.50)} ${createBtn('BBQ Wrap', 6.00)} ${createBtn('BBQ Wrap Meal', 7.50)} ${createBtn('BBQ Strip Burger', 4.50)}${createBtn('BBQ Strip Burger Meal', 5.50)}`;
   }
   else if (category === "Peri Peri") {
-    content = `${createBtn('6 Peri Wings', 6.00)} ${createBtn('1/4 Chicken Rice', 9.00)} ${createBtn('6 Strips Meal', 8.50)}`;
+    content = `${createBtn('6 Peri Wings', 6.00)} ${createBtn('6 Peri Wings Meal', 7.50)} ${createBtn('12 Peri Wings', 10.00)} ${createBtn('6 Peri Strips', 7.50)} ${createBtn('6 Peri Strips Meal', 8.50)} ${createBtn('6 Peri Peri Wings/Strips with Rice', 9.00)} ${createBtn('1/4 Peri Chicken Rice Meal', 9.00)}`;
   }
   else if (category === "Mixed/Family Bucket Deals") {
-    content = `${createBtn('Mixed Bucket 1', 24.00)} ${createBtn('Wings Bucket', 20.00)} ${createBtn('Family Bucket 1', 19.00)}`;
+    content = `${createBtn('Mixed Bucket 1', 24.00)} ${createBtn('Mixed Bucket 2', 26.00)} ${createBtn('Wings Bucket ', 20.00)} ${createBtn('Family Bucket 1', 19.00)} ${createBtn('Family Bucket 2', 22.00)} ${createBtn('Strips Bucket (10)', 19.00)} ${createBtn('Strips Bucket (15)', 22.00)}`;
   }
   else if (category === "Starters and Extras") {
     content = ` ${createBtn('Chilli Cheese Bites 8pcs', 4.50)} ${createBtn('Garlic Mushroom 8pcs', 3.00)} ${createBtn('Garlic Bread 4pcs', 3.00)} ${createBtn('Mozzarella Sticks 6pcs', 4.00)} ${createBtn('Onion Rings 8pcs', 3.50)} ${createBtn('Corn on the Cob', 2.50)} ${createBtn('Sweet Chilli Bites 6pcs', 3.50)} ${createBtn('Battered Sausage', 3.00)} ${createBtn('Hash Brown', 1.50)} ${createBtn('Kebab Roll (Ch/Lmb)', 3.00)} ${createBtn('Coleslaw Reg', 1.50)} ${createBtn('Coleslaw Lrg', 2.00)} ${createBtn('BBQ Beans Reg', 1.50)} ${createBtn('BBQ Beans Lrg', 2.00)} ${createBtn('Doughnuts', 1.00)} ${createBtn('Fudge Cake', 3.00)} ${createBtn('Strawberry Cheesecake', 3.00)} ${createBtn('Apple Pie', 2.00)} ${createBtn('Ice Cream', 5.50)}   `;
@@ -392,17 +400,17 @@ function openCategory(category) {
     content = `${createBtn('Fries Reg', 2.00)} ${createBtn('Fries Lrg', 3.00)} ${createBtn('Cheesy Chips Reg', 4.00)}${createBtn('Cheesy Chips Lrg', 5.00)} ${createBtn('Potato Wedges Reg', 3.50)} ${createBtn('Potato Wedges Lrg', 4.00)} ${createBtn('Curly Fries Reg', 3.50)} ${createBtn('Curly Fries Lrg', 4.00)}`;
   }
   else if (category === "Kids Meals") {
-    content = `${createBtn('K-Strips Meal', 5.00)} ${createBtn('K-Cheese Meal', 5.00)} ${createBtn('K-4 Nuggets Meal', 5.00)}`;
+    content = `${createBtn('Kids 3 Chicken Strip ', 4.00)} ${createBtn('Kids 3 Chicken Strip Meal', 5.00)} ${createBtn('Kids 12 PCS Chicken Popcorn', 4.50)} ${createBtn('Kids 12 PCS Chicken Popcorn Meal', 5.50)} ${createBtn('Kids Steak Burger ', 4.50)} ${createBtn('Kids Steak Burger Meal', 5.50)}${createBtn('Kids Strips Burger ', 4.00)} ${createBtn('Kids Strips Burger Meal ', 5.00)} ${createBtn('Kids Cheese Burger ', 4.00)} ${createBtn('Kids Cheese Burger Meal', 5.00)} ${createBtn('Kids 4 Nuggets ', 4.00)} ${createBtn('Kids 4 Nuggets Meal', 5.00)}`;
   }
-  else if (category === "Sauces") {
-    content = `${createBtn('Ketchup', 0.00)} ${createBtn('Mayo', 0.00)} ${createBtn('Burger Sauce', 0.00)}`;
+  else if (category === "Sauces/Dips") {
+    content = `${createBtn('Burger', 0.30)} ${createBtn('Mayo', 0.30)} ${createBtn('BBQ', 0.30)}${createBtn('Chili', 0.30)}${createBtn('Sweet Chili', 0.30)}${createBtn('Ketchup', 0.30)}`;
   }
   else if (category === "Drinks") {
     content = `${createBtn('Can Drink', 1.00)} ${createBtn('Water', 1.00)} ${createBtn('1.5L Bottle', 3.00)}`;
   }
   else if (category === "Offer(12-4)") {
     content = `${createBtn('Lunch Deal 1', 4.50)} ${createBtn('Lunch Deal 2', 5.50)}`;
-  }
+  }3
 
   grid.innerHTML = `<div class="category-screen"><div class="category-header">${category}</div><div class="products">${content}</div></div>`;
 }
@@ -412,9 +420,32 @@ function clearCart() {
     updateCheckout();
   }
 }
+function printEndOfDayReport() {
+    let reportText = "    TENNESSEE EXPRESS\n";
+    reportText += "    END OF DAY REPORT\n";
+    reportText += "================================\n";
+    reportText += `Date: ${new Date().toLocaleDateString()}\n`;
+    reportText += `Time: ${new Date().toLocaleTimeString()}\n`;
+    reportText += "--------------------------------\n";
+    
+    reportText += `TOTAL SALES:     GBP ${dailySales.total.toFixed(2).padStart(10, ' ')}\n`;
+    reportText += `CASH TOTAL:      GBP ${dailySales.cash.toFixed(2).padStart(10, ' ')}\n`;
+    reportText += `CARD TOTAL:      GBP ${dailySales.card.toFixed(2).padStart(10, ' ')}\n`;
+    reportText += `TOTAL ORDERS:    ${dailySales.count.toString().padStart(14, ' ')}\n`;
+    
+    reportText += "--------------------------------\n";
+    reportText += "     End of Report\n\n\n\n\n";
+
+    // Convert to Base64 for RawBT printing
+    const base64Data = btoa(unescape(encodeURIComponent(reportText)));
+    window.location.href = "rawbt:base64," + base64Data;
+}
+
 </script>
 <div id="summaryPage" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#39326C; z-index:5000; padding:40px; box-sizing:border-box; font-family: sans-serif;">
-  
+  <button onclick="printEndOfDayReport()" style="margin-top:20px; background:#27ae60; border:none; color:white; padding:15px 30px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:18px; width: 100%;">
+  PRINT END OF DAY REPORT
+</button>
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
     <h1 style="color:white; margin:0; font-size: 32px;">Daily Summary</h1>
     <button onclick="closeSummary()" style="background:#cc0000; color:white; border:none; padding:10px 30px; font-size:18px; border-radius:10px; cursor:pointer; font-weight:bold;">BACK TO POS</button>
