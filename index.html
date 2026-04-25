@@ -51,7 +51,10 @@
 
       <div class="sub-bar">
         <button class="home-btn" onclick="goHome()">Home</button>
-        <button class="nav-btn back-btn" onclick="goBack()">BACK</button>
+
+        <div class="nav-divider"></div>
+
+        <button class="nav-btn back-btn" onclick="goBack()">Back</button>
 
       </div>
 
@@ -169,7 +172,7 @@ function printDirect() {
     cart.forEach(item => {
         let name = item.name.substring(0, 20).padEnd(18, ' ');
         // We use "GBP" instead of the symbol
-        let price = "£ " + item.price.toFixed(2); 
+        let price = "GBP " + item.price.toFixed(2); 
         receiptText += `${name} ${price.padStart(12, ' ')}\n`;
         
         if (item.mods && item.mods.length > 0) {
@@ -181,7 +184,7 @@ function printDirect() {
     });
 
     receiptText += "--------------------------------\n";
-    receiptText += `TOTAL:        £ ${total.toFixed(2).padStart(15, ' ')}\n`;
+    receiptText += `TOTAL:        GBP ${total.toFixed(2).padStart(15, ' ')}\n`;
     receiptText += "================================\n";
     receiptText += "\n   Thank you for your order!\n\n\n\n\n";
 
