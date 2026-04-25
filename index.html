@@ -159,7 +159,6 @@ function printDirect() {
 
     let total = cart.reduce((sum, item) => sum + item.price, 0);
     
-    // 1. Build the Receipt Text
     let receiptText = "      CHICKEN SHOP\n";
     receiptText += "--------------------------------\n";
     receiptText += `Date: ${new Date().toLocaleString()}\n\n`;
@@ -173,36 +172,32 @@ function printDirect() {
     receiptText += "--------------------------------\n";
     receiptText += `TOTAL: ${("£" + total.toFixed(2)).padStart(22, ' ')}\n\n\n\n\n`;
 
-    // 2. The RAWBT specific JSON format
+    // New flatter structure for RawBT
     const printJob = {
-        attributes: {
-            type: "rawbt",
-            version: 1
+        "attributes": {
+            "type": "rawbt",
+            "version": 1
         },
-        commands: [
+        "commands": [
             {
-                command: "printText",
-                text: receiptText
-            },
-            {
-                command: "lineFeed",
-                count: 5
+                "command": "printText",
+                "text": receiptText
             }
         ]
     };
 
-    // 3. Send via WebSocket
     const socket = new WebSocket("ws://127.0.0.1:40213/");
 
     socket.onopen = function() {
-        // We must send it as a stringified JSON object
+        // Log it so you can see it in the browser console
+        console.log("Sending JSON:", JSON.stringify(printJob));
         socket.send(JSON.stringify(printJob));
-        console.log("Data sent to printer bridge.");
-        setTimeout(() => socket.close(), 500);
+        // Give the socket a bit more time before closing
+        setTimeout(() => socket.close(), 1000);
     };
 
     socket.onerror = function(err) {
-        alert("Printer connection failed. Is the RawBT Server running?");
+        alert("Printer connection failed.");
     };
 }
 
