@@ -391,10 +391,10 @@ function openCategory(category) {
     content = `${createBtn('Chicken Wrap', 5.50)} ${createBtn('Chicken Wrap Meal', 7.00)}`;
   }
   else if (category === "Combo Meals") {
-    content = `${createBtn('Combo 1', 7.50 , '2 Chicken, 3 Wings' )} ${createBtn('Combo 2', 7.50,'Burger & 2 Strips')} ${createBtn('Combo 3', 7.50,'Burger & 3 Wings')}`;
+    content = `${createBtn('Combo Meal1', 7.50 , '2 Chicken, 3 Wings' )} ${createBtn('Combo Meal 2', 7.50,'Burger & 2 Strips')} ${createBtn('Combo Meal 3', 7.50,'Burger & 3 Wings')}`;
   }
   else if (category === "BBQ") {
-    content = `${createBtn('6 BBQ Wings', 6.00)} ${createBtn('6 BBQ Wings Meal', 7.00)} ${createBtn('6 BBQ Wings Meal', 7.00)}${createBtn('1PCS BBQ Chicken', 3.50)} ${createBtn('2PCS BBQ Chicken Meal', 6.50)} ${createBtn('4PCS BBQ Chicken Meal', 9.50)} ${createBtn('BBQ Chicken Burger ', 6.00)}${createBtn('BBQ Burger Meal', 7.00)} ${createBtn('6 BBQ Strips', 6.50)} ${createBtn('6 BBQ Strips Meal', 7.50)} ${createBtn('BBQ Wrap', 6.00)} ${createBtn('BBQ Wrap Meal', 7.50)} ${createBtn('BBQ Strip Burger', 4.50)}${createBtn('BBQ Strip Burger Meal', 5.50)}`;
+    content = `${createBtn('6 BBQ Wings', 6.00)} ${createBtn('6 BBQ Wings Meal', 7.00)} ${createBtn('1PCS BBQ Chicken', 3.50)} ${createBtn('2PCS BBQ Chicken Meal', 6.50)} ${createBtn('4PCS BBQ Chicken Meal', 9.50)} ${createBtn('BBQ Chicken Burger ', 6.00)}${createBtn('BBQ Burger Meal', 7.00)} ${createBtn('6 BBQ Strips', 6.50)} ${createBtn('6 BBQ Strips Meal', 7.50)} ${createBtn('BBQ Wrap', 6.00)} ${createBtn('BBQ Wrap Meal', 7.50)} ${createBtn('BBQ Strip Burger', 4.50)}${createBtn('BBQ Strip Burger Meal', 5.50)}`;
   }
   else if (category === "Peri Peri") {
     content = `${createBtn('6 Peri Wings', 6.00)} ${createBtn('6 Peri Wings Meal', 7.50)} ${createBtn('12 Peri Wings', 10.00)} ${createBtn('6 Peri Strips', 7.50)} ${createBtn('6 Peri Strips Meal', 8.50)} ${createBtn('6 Peri Peri Wings/Strips with Rice', 9.00)} ${createBtn('1/4 Peri Chicken Rice Meal', 9.00)}`;
@@ -421,7 +421,7 @@ function openCategory(category) {
     content = `${createBtn('2 PCS Chiken Strips', 3.00)} ${createBtn('3 BBQ Wings OR 1PC BBQ Chicken', 3.00)}${createBtn('3 Chicken Nuggets', 3.00)}${createBtn('3 mozzerlla Sticks', 3.00)}${createBtn('Strips Burger', 3.00)}${createBtn('3 Hot Wings', 3.00)}${createBtn('1PCS Chicken ', 3.00)} ${createBtn('1PCS Saveloy', 3.00)}`;
   }
    else if (category === "Special Offers Family Deals") {
-    content = ` ${createBtn('Family Deal 1', 16.00, '1 Burgers ,1 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans')} ${createBtn('Family Deal 2', 16.00,'2 Burgers OR 2 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans ')}${createBtn('Family Deal 3', 16.00,'2 Burgers ,2 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans')} ${createBtn('Extra Drink + 50P', 0.50)}`;
+    content = ` ${createBtn('Family Deal 1', 22.00, '1 Burgers ,1 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans')} ${createBtn('Family Deal 2', 16.00,'2 Burgers OR 2 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans ')} ${createBtn('Family Deal 3', 16.00,'2 Burgers ,2 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans')}`;
   }
   else if (category === "Offer(12-4)") {
     content = `${createBtn('4 Peri peri strips ', 5.00)} ${createBtn('3 Peri peri strips/Wings ', 4.50)} ${createBtn('Mini Wrap ', 4.50)} ${createBtn('4 Buffalo Wings/Strips ', 4.50)} ${createBtn('Fish Burger With 2 Strips ', 6.00)} ${createBtn('Big Mac ', 8.00)} ${createBtn('1 PCS Chicken & 2 wings & 2 Strips ', 6.00)} ${createBtn('Extra Drink + 50P', 0.50)}`;
@@ -501,7 +501,10 @@ function printEndOfDayReport() {
     <button class="mod-btn" onclick="addMod('No Mayo')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Mayo</button>
     <button class="mod-btn" onclick="addMod('No Ketchup')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Ketchup</button>
     <button class="mod-btn" onclick="addMod('No Lettuce')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Lettuce</button>
-    <button class="mod-btn" onclick="addMod('No Burger Sauce')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Burger Sauce</button>
+    <button class="mod-btn" onclick="addMod('No Cheese')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Cheese
+    <button class="mod-btn" onclick="addMod(' Extra Cheese')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Extra Cheese</button>  
+    </button>
+    
   </div>
 </div>
 
