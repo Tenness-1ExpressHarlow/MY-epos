@@ -179,9 +179,13 @@ function printDirect() {
 
     cart.forEach(item => {
         let name = item.name.substring(0, 20).padEnd(18, ' ');
-        // We use "GBP" instead of the symbol
         let price = "GBP " + item.price.toFixed(2); 
         receiptText += `${name} ${price.padStart(12, ' ')}\n`;
+        
+        // NEW: If there is a description (like Combo 1 details), print it here
+        if (item.desc) {
+            receiptText += `  (${item.desc})\n`;
+        }
         
         if (item.mods && item.mods.length > 0) {
             item.mods.forEach(mod => {
@@ -199,6 +203,7 @@ function printDirect() {
     const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
     window.location.href = "rawbt:base64," + base64Data;
 }
+
 function goBack() {
     // If you just want to go back to the main menu, call goHome
     goHome();
@@ -261,8 +266,8 @@ async function resetDay() {
 }
 
 
-function addToCart(name, price) {
-  cart.push({ name: name, price: price, mods: [] });
+function addToCart(name, price,desc = "") {
+  cart.push({ name: name, price: price, desc: desc,  mods: [] });
   updateCheckout();
 }
 
@@ -287,11 +292,13 @@ function updateCheckout() {
   cart.forEach((item, index) => {
     total += item.price;
     let modsDisplay = item.mods.length > 0 ? `<div style="font-size:12px; color:red; font-style:italic;">${item.mods.join(", ")}</div>` : "";
+    let descDisplay = item.desc ? `<span style="font-size:14px; color:#666;">${item.desc}</span>` : "";
 
     cartItemsDiv.innerHTML += `
       <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee; background:#fff; margin-bottom:5px;">
         <div style="display:flex; flex-direction:column;">
           <span style="font-weight:bold; color:#000;">${item.name}</span>
+          ${descDisplay}
           ${modsDisplay}
           <span style="font-size:14px; color:#444;">£${item.price.toFixed(2)}</span>
         </div>
