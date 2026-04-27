@@ -84,6 +84,8 @@
     
     <button class="product-tile green" onclick="openCategory('Offer(12-4)')">Offer(12-4)</button>
 
+    <button class="product-tile green" onclick="openCategory('Special Offers Family Deals')">Special Offers Family Deals</button>
+
     <button class="product-tile green" onclick="openCategory('Kids Special Offers')">Kids Special Offers</button>
       </div>
 
@@ -418,8 +420,11 @@ function openCategory(category) {
   else if (category === "Kids Special Offers") {
     content = `${createBtn('2 PCS Chiken Strips', 3.00)} ${createBtn('3 BBQ Wings OR 1PC BBQ Chicken', 3.00)}${createBtn('3 Chicken Nuggets', 3.00)}${createBtn('3 mozzerlla Sticks', 3.00)}${createBtn('Strips Burger', 3.00)}${createBtn('3 Hot Wings', 3.00)}${createBtn('1PCS Chicken ', 3.00)} ${createBtn('1PCS Saveloy', 3.00)}`;
   }
+   else if (category === "Special Offers Family Deals") {
+    content = ` ${createBtn('Family Deal 1', 16.00, '1 Burgers ,1 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans')} ${createBtn('Family Deal 2', 16.00,'2 Burgers OR 2 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans ')}${createBtn('Family Deal 3', 16.00,'2 Burgers ,2 Wraps ,2 Chicken ,4 Wings ,2 Fries ,2 Cans')} ${createBtn('Extra Drink + 50P', 0.50)}`;
+  }
   else if (category === "Offer(12-4)") {
-    content = `${createBtn('4 Peri peri strips ', 5.00)} ${createBtn('3 Peri peri strips/Wings ', 4.50)} ${createBtn('Mini Wrap ', 4.50)} ${createBtn('4 Buffalo Wings/Strips ', 4.50)} ${createBtn('Fish Burger With 2 Strips ', 6.00)} ${createBtn('Big Mac ', 8.00)} ${createBtn('1 PCS Chicken & 2 wings & 2 Strips ', 6.00)} ${createBtn('Family Deal 1', 16.00)} ${createBtn('Family Deal 2', 16.00)}${createBtn('Family Deal 3', 16.00)}${createBtn('Extra Drink + 50P', 0.50)}`;
+    content = `${createBtn('4 Peri peri strips ', 5.00)} ${createBtn('3 Peri peri strips/Wings ', 4.50)} ${createBtn('Mini Wrap ', 4.50)} ${createBtn('4 Buffalo Wings/Strips ', 4.50)} ${createBtn('Fish Burger With 2 Strips ', 6.00)} ${createBtn('Big Mac ', 8.00)} ${createBtn('1 PCS Chicken & 2 wings & 2 Strips ', 6.00)} ${createBtn('Extra Drink + 50P', 0.50)}`;
   }3
   
 
