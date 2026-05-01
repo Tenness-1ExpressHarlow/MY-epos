@@ -410,13 +410,13 @@ function openCategory(category) {
     content = `${createBtn('Mixed Bucket 1', 25.00)} ${createBtn('Mixed Bucket 2', 26.00)} ${createBtn('Wings Bucket ', 20.00,'20 Wings')} ${createBtn('Family Bucket 1', 20.00)} ${createBtn('Family Bucket 2', 22.00)} ${createBtn('Strips Bucket (10)', 20.00)} ${createBtn('Strips Bucket (15)', 23.00)}`;
   }
   else if (category === "Starters and Extras") {
-    content = ` ${createBtn('Chilli Cheese Bites 8pcs', 4.50)} ${createBtn('Garlic Mushroom 8pcs', 3.00)} ${createBtn('Garlic Bread 4pcs', 3.00)} ${createBtn('Mozzarella Sticks 6pcs', 4.00)} ${createBtn('Onion Rings 8pcs', 3.50)} ${createBtn('Corn on the Cob', 2.50)} ${createBtn('Sweet Chilli Bites 6pcs', 3.50)} ${createBtn('Battered Sausage', 3.00)} ${createBtn('Hash Brown', 1.50)} ${createBtn('Kebab Roll (Ch/Lmb)', 3.00)} ${createBtn('Coleslaw Reg', 1.50)} ${createBtn('Coleslaw Lrg', 2.00)} ${createBtn('BBQ Beans Reg', 1.50)} ${createBtn('BBQ Beans Lrg', 2.00)} ${createBtn('Doughnuts', 1.00)} ${createBtn('Fudge Cake', 3.00)} ${createBtn('Strawberry Cheesecake', 3.00)} ${createBtn('Apple Pie', 2.00)} ${createBtn('Ice Cream', 5.50)}   `;
+    content = ` ${createBtn('Chilli Cheese Bites 8pcs', 4.50)} ${createBtn('Garlic Mushroom 8pcs', 3.00)} ${createBtn('Garlic Bread 4pcs', 3.00)} ${createBtn('Mozzarella Sticks 6pcs', 4.00)} ${createBtn('Onion Rings 8pcs', 3.50)} ${createBtn('Corn on the Cob', 2.50)} ${createBtn('Sweet Chilli Bites 6pcs', 3.50)} ${createBtn('Battered Sausage', 3.00)} ${createBtn('Hash Brown', 1.50)} ${createBtn('Kebab Roll (Ch/Lmb)', 3.00)} ${createBtn('Coleslaw Reg', 1.50)} ${createBtn('Coleslaw Lrg', 2.00)} ${createBtn('BBQ Beans Reg', 1.50)} ${createBtn('BBQ Beans Lrg', 2.00)} ${createBtn('Doughnuts', 1.00)} ${createBtn('Fudge Cake', 3.00)} ${createBtn('Strawberry Cheesecake', 3.00)} ${createBtn('Apple Pie', 2.00)} ${createBtn('Ice Cream', 5.50)} ${createBtn('Veggie Spring Roll', 1.00)}   `;
   }
   else if (category === "Fries") {
     content = `${createBtn('Fries Reg', 2.00)} ${createBtn('Fries Lrg', 3.00)} ${createBtn('Cheesy Chips Reg', 4.00)}${createBtn('Cheesy Chips Lrg', 5.00)} ${createBtn('Potato Wedges Reg', 3.50)} ${createBtn('Potato Wedges Lrg', 4.00)} ${createBtn('Curly Fries Reg', 3.50)} ${createBtn('Curly Fries Lrg', 4.00)}`;
   }
   else if (category === "Kids Meals") {
-    content = `${createBtn('Kids 3 Chicken Strip ', 4.00)} ${createBtn('Kids 3 Chicken Strip Meal', 5.00)} ${createBtn('Kids 12 PCS Chicken Popcorn', 4.50)} ${createBtn('Kids 12 PCS Chicken Popcorn Meal', 5.50)} ${createBtn('Kids Steak Burger ', 4.50)} ${createBtn('Kids Steak Burger Meal', 5.50)}${createBtn('Kids Strip Burger ', 4.00)} ${createBtn('Kids Strip Burger Meal ', 5.00)} ${createBtn('Kids Cheese Burger ', 4.00)} ${createBtn('Kids Cheese Burger Meal', 5.00)} ${createBtn('Kids 4 Nuggets ', 4.00)} ${createBtn('Kids 4 Nuggets Meal', 5.00)}`;
+    content = `${createBtn('Kids 3 Chicken Strip ', 4.00)} ${createBtn('Kids 3 Chicken Strip Meal', 5.00)} ${createBtn('Kids 12 PCS Chicken Popcorn', 4.50)} ${createBtn('Kids 12 PCS Chicken Popcorn Meal', 5.50)} ${createBtn('Kids Steak Burger ', 4.50)} ${createBtn('Kids Steak Burger Meal', 5.50)}${createBtn('Kids Strip Burger ', 4.00)} ${createBtn('Kids Strip Burger Meal ', 5.00)} ${createBtn('Kids Cheese Burger ', 4.00)} ${createBtn('Kids Cheese Burger Meal', 5.00)} ${createBtn('Kids 4 Nuggets ', 4.00)} ${createBtn('Kids 4 Nuggets Meal', 5.00)} ${createBtn('Kids 6 Nuggets ', 5.50)}${createBtn('Kids 6 Nuggets Meal', 6.50)}`;
   }
   else if (category === "Sauces/Dips") {
     content = `${createBtn('Burger', 0.30)} ${createBtn('Mayo', 0.30)} ${createBtn('BBQ', 0.30)}${createBtn('Chili', 0.30)}${createBtn('Sweet Chili', 0.30)}${createBtn('Ketchup', 0.30)}`;
@@ -506,12 +506,17 @@ function printEndOfDayReport() {
   
   <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px;">
     <button class="mod-btn" onclick="addMod('No Mayo')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Mayo</button>
+    <button class="mod-btn" onclick="addMod('Mayo Only')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Mayo Only</button>
     <button class="mod-btn" onclick="addMod('No Ketchup')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Ketchup</button>
+    <button class="mod-btn" onclick="addMod('Ketchup Only')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Ketchup Only</button>
     <button class="mod-btn" onclick="addMod('No Lettuce')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Lettuce</button>
-    <button class="mod-btn" onclick="addMod('No Cheese')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Cheese
-    <button class="mod-btn" onclick="addMod(' Extra Cheese')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Extra Cheese</button>  
-    </button>
-    
+    <button class="mod-btn" onclick="addMod('Lettuce Only')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Lettuce Only</button>
+    <button class="mod-btn" onclick="addMod('No Cheese')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Cheese</button>
+    <button class="mod-btn" onclick="addMod('Extra Cheese')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Extra Cheese</button>
+    <button class="mod-btn" onclick="addMod('Cheese Only')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Cheese Only</button>
+    <button class="mod-btn" onclick="addMod('No Burger Sauce')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">No Burger Sauce</button>
+    <button class="mod-btn" onclick="addMod('Burger Sauce Only')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Burger Sauce Only</button>
+    <button class="mod-btn" onclick="addMod('Plain')" style="padding:30px; font-size:18px; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">Plain</button>
   </div>
 </div>
 
