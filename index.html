@@ -544,20 +544,41 @@ function saveMenuData() { localStorage.setItem("eposMenuData", JSON.stringify(me
 </body>
 <script>
 function printDirect() {
-  // 1. Get your data
-  const itemData = document.querySelector('.item-count')?.innerText || "Items: 0";
-  
-  // 2. Locate the total and replace any existing currency symbol with '£'
-  // This assumes the total string might look like "$10.00" or "10.00"
-  let totalRaw = document.querySelector('.total')?.innerText || "0.00";
-  let totalData = "Total: £" + totalRaw.replace(/[^0-9.]/g, ''); 
+    if (cart.length === 0) return;
 
-  // 3. Prepare the receipt text with the Pound symbol
-  const receiptText = "TENNESSEE EXPRESS\n----------------\n" + itemData + "\n" + totalData + "\n----------------\nThank You!\n\n\n";
+    let receiptText = "      TENNESSEE EXPRESS\n";
+    receiptText += "          CHICKEN SHOP\n";
+    receiptText += "================================\n";
+    receiptText += `Date: ${new Date().toLocaleString()}\n`;
+    receiptText += "--------------------------------\n";
 
-  // 4. Trigger RawBT
-  const rawbtUrl = "rawbt:base64," + btoa(unescape(encodeURIComponent(receiptText)));
-  window.location.href = rawbtUrl;
+    let total = 0;
+
+    cart.forEach(item => {
+        let name = item.name.substring(0, 20).padEnd(18, ' ');
+        let price = "GBP " + item.price.toFixed(2); 
+        receiptText += `${name} ${price.padStart(12, ' ')}\n`;
+        
+        if (item.desc) {
+            receiptText += `  (${item.desc})\n`;
+        }
+        
+        if (item.mods && item.mods.length > 0) {
+            item.mods.forEach(mod => {
+                receiptText += `  - ${mod}\n`;
+            });
+        }
+        total += item.price;
+    });
+
+    receiptText += "--------------------------------\n";
+    receiptText += `TOTAL:         GBP ${total.toFixed(2).padStart(15, ' ')}\n`;
+    receiptText += "================================\n";
+    receiptText += "\n   Thank you for your order!\n\n\n\n\n";
+
+    // Encode safely to Base64 avoiding symbol corruption
+    const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
+    window.location.href = "rawbt:base64," + base64Data;
 }
 </script>
 </html>
