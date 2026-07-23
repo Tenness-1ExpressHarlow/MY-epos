@@ -269,6 +269,58 @@ function resetDailySales() {
     renderSummaryData();
   }
 }
+function printEndOfDayReport() {
+    // Reads values directly from your summary elements if salesHistory array isn't populated
+    const totalRev = document.getElementById("sumTotalSales") ? document.getElementById("sumTotalSales").innerText : "£0.00";
+    const totalOrders = document.getElementById("sumTotalOrders") ? document.getElementById("sumTotalOrders").innerText : "0";
+    const cashTotal = document.getElementById("sumCashSales") ? document.getElementById("sumCashSales").innerText : "£0.00";
+    const cardTotal = document.getElementById("sumCardSales") ? document.getElementById("sumCardSales").innerText : "£0.00";
+
+    let reportText = "      TENNESSEE EXPRESS\n";
+    reportText += "      END OF DAY REPORT\n";
+    reportText += "================================\n";
+    reportText += `Date: ${new Date().toLocaleDateString()}\n`;
+    reportText += `Time: ${new Date().toLocaleTimeString()}\n`;
+    reportText += "--------------------------------\n";
+
+    reportText += `Total Orders:  ${totalOrders.padStart(17, ' ')}\n`;
+    reportText += `Cash Revenue:  ${cashTotal.padStart(17, ' ')}\n`;
+    reportText += `Card Revenue:  ${cardTotal.padStart(17, ' ')}\n`;
+    reportText += "--------------------------------\n";
+
+    // Itemized breakdown if salesHistory array is available
+    if (typeof salesHistory !== 'undefined' && Array.isArray(salesHistory) && salesHistory.length > 0) {
+        let itemSummary = {};
+        salesHistory.forEach(order => {
+            if (order.items && Array.isArray(order.items)) {
+                order.items.forEach(item => {
+                    if (itemSummary[item.name]) {
+                        itemSummary[item.name].qty += 1;
+                        itemSummary[item.name].total += item.price;
+                    } else {
+                        itemSummary[item.name] = { qty: 1, total: item.price };
+                    }
+                });
+            }
+        });
+
+        reportText += "ITEM SALES BREAKDOWN:\n";
+        for (const [itemName, data] of Object.entries(itemSummary)) {
+            let nameStr = `${data.qty}x ${itemName}`.substring(0, 18).padEnd(18, ' ');
+            let priceStr = "GBP " + data.total.toFixed(2);
+            reportText += `${nameStr} ${priceStr.padStart(12, ' ')}\n`;
+        }
+        reportText += "--------------------------------\n";
+    }
+
+    reportText += `GROSS TOTAL:   ${totalRev.padStart(17, ' ')}\n`;
+    reportText += "================================\n";
+    reportText += "\n    *** END OF REPORT ***\n\n\n\n\n";
+
+    // Send payload to RawBT
+    const base64Data = btoa(unescape(encodeURIComponent(reportText)));
+    window.location.href = "rawbt:base64," + base64Data;
+}
 
 function openMenuManager() {
   document.getElementById("menuManagerModal").style.display = "block";
@@ -469,11 +521,15 @@ function saveMenuData() { localStorage.setItem("eposMenuData", JSON.stringify(me
     </div>
   </div>
 
-  <div style="background:rgba(0,0,0,0.2); padding:20px; border-radius:10px; max-width:400px;">
-     <h4 style="color:white; margin-top:0; margin-bottom:8px;">End of Shift Operations</h4>
-     <p style="color:#888; font-size:14px; margin-bottom:15px;">Wipe total track values to start next business day clean.</p>
+<div style="background:rgba(0,0,0,0.2); padding:20px; border-radius:10px; max-width:500px;">
+   <h4 style="color:white; margin-top:0; margin-bottom:8px;">End of Shift Operations</h4>
+   <p style="color:#888; font-size:14px; margin-bottom:15px;">Print your shift breakdown or wipe values to start the next business day clean.</p>
+   
+   <div style="display:flex; gap:12px; flex-wrap:wrap;">
+     <button onclick="printEndOfDayReport()" style="background:#2980b9; color:white; border:none; padding:12px 20px; border-radius:6px; font-weight:bold; cursor:pointer;">🖨️ Print End of Shift Report</button>
      <button onclick="resetDailySales()" style="background:#c0392b; color:white; border:none; padding:12px 20px; border-radius:6px; font-weight:bold; cursor:pointer;">Reset Shift Register Counters</button>
-  </div>
+   </div>
+</div>
 </div>
 
 <div id="menuManagerModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#2c2554; z-index:20002; padding:40px; box-sizing:border-box; font-family: sans-serif; overflow-y: auto;">
@@ -580,5 +636,84 @@ function printDirect() {
     const base64Data = btoa(unescape(encodeURIComponent(receiptText)));
     window.location.href = "rawbt:base64," + base64Data;
 }
+function printEndOfDayReport() {
+    // Reads values directly from your summary elements if salesHistory array isn't populated
+    const totalRev = document.getElementById("sumTotalSales") ? document.getElementById("sumTotalSales").innerText : "£0.00";
+    const totalOrders = document.getElementById("sumTotalOrders") ? document.getElementById("sumTotalOrders").innerText : "0";
+    const cashTotal = document.getElementById("sumCashSales") ? document.getElementById("sumCashSales").innerText : "£0.00";
+    const cardTotal = document.getElementById("sumCardSales") ? document.getElementById("sumCardSales").innerText : "£0.00";
+
+    let reportText = "      TENNESSEE EXPRESS\n";
+    reportText += "      END OF DAY REPORT\n";
+    reportText += "================================\n";
+    reportText += `Date: ${new Date().toLocaleDateString()}\n`;
+    reportText += `Time: ${new Date().toLocaleTimeString()}\n`;
+    reportText += "--------------------------------\n";
+
+    reportText += `Total Orders:  ${totalOrders.padStart(17, ' ')}\n`;
+    reportText += `Cash Revenue:  ${cashTotal.padStart(17, ' ')}\n`;
+    reportText += `Card Revenue:  ${cardTotal.padStart(17, ' ')}\n`;
+    reportText += "--------------------------------\n";
+
+    // Itemized breakdown if salesHistory array is available
+    if (typeof salesHistory !== 'undefined' && Array.isArray(salesHistory) && salesHistory.length > 0) {
+        let itemSummary = {};
+        salesHistory.forEach(order => {
+            if (order.items && Array.isArray(order.items)) {
+                order.items.forEach(item => {
+                    if (itemSummary[item.name]) {
+                        itemSummary[item.name].qty += 1;
+                        itemSummary[item.name].total += item.price;
+                    } else {
+                        itemSummary[item.name] = { qty: 1, total: item.price };
+                    }
+                });
+            }
+        });
+
+        reportText += "ITEM SALES BREAKDOWN:\n";
+        for (const [itemName, data] of Object.entries(itemSummary)) {
+            let nameStr = `${data.qty}x ${itemName}`.substring(0, 18).padEnd(18, ' ');
+            let priceStr = "GBP " + data.total.toFixed(2);
+            reportText += `${nameStr} ${priceStr.padStart(12, ' ')}\n`;
+        }
+        reportText += "--------------------------------\n";
+    }
+
+    reportText += `GROSS TOTAL:   ${totalRev.padStart(17, ' ')}\n`;
+    reportText += "================================\n";
+    reportText += "\n    *** END OF REPORT ***\n\n\n\n\n";
+
+    // Send payload to RawBT
+    const base64Data = btoa(unescape(encodeURIComponent(reportText)));
+    window.location.href = "rawbt:base64," + base64Data;
+}
+function printEndOfDayReport() {
+    let reportText = "      TENNESSEE EXPRESS\n";
+    reportText += "      END OF DAY REPORT\n";
+    reportText += "================================\n";
+    reportText += `Date: ${new Date().toLocaleDateString()}\n`;
+    reportText += `Time: ${new Date().toLocaleTimeString()}\n`;
+    reportText += "--------------------------------\n";
+
+    let ordersStr = dailySales.count.toString();
+    let cashStr = "GBP " + dailySales.cash.toFixed(2);
+    let cardStr = "GBP " + dailySales.card.toFixed(2);
+    let totalStr = "GBP " + dailySales.total.toFixed(2);
+
+    reportText += `Total Orders: ${ordersStr.padStart(17, ' ')}\n`;
+    reportText += `Cash Total:  ${cashStr.padStart(17, ' ')}\n`;
+    reportText += `Card Total:  ${cardStr.padStart(17, ' ')}\n`;
+    reportText += "--------------------------------\n";
+    reportText += `GROSS TOTAL: ${totalStr.padStart(17, ' ')}\n`;
+    reportText += "================================\n";
+    reportText += "\n    *** END OF REPORT ***\n\n\n\n\n";
+
+    // Encode safely to Base64 for RawBT printer output
+    const base64Data = btoa(unescape(encodeURIComponent(reportText)));
+    window.location.href = "rawbt:base64," + base64Data;
+}
+
+
 </script>
 </html>
