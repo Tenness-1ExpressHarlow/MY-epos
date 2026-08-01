@@ -12,12 +12,19 @@
 </head>
 
 <body>
-<div id="sideMenu" style="position:fixed; top:0; left:-250px; width:250px; height:100%; background:#39326C; z-index:20001; transition: 0.3s; padding-top: 60px; box-shadow: 5px 0 15px rgba(0,0,0,0.3);">
+<div id="sideMenu" style="position:fixed; top:0; left:-250px; width:250px; height:100%; background:#39326C; z-index:20001; transition: 0.3s; padding: 60px 0 20px 0; box-shadow: 5px 0 15px rgba(0,0,0,0.3); display:flex; flex-direction:column; box-sizing:border-box;">
   <button onclick="toggleMenu()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:30px; cursor:pointer;">&times;</button>
+  
+  <!-- Navigation Links -->
   <div style="display:flex; flex-direction:column; gap:20px; padding-left:30px;">
     <a href="#" onclick="goHome(); toggleMenu();" style="color:white; text-decoration:none; font-size:24px; font-family:sans-serif; font-weight:bold;">Home</a>
     <a href="#" onclick="goToSales(); toggleMenu();" style="color:white; text-decoration:none; font-size:24px; font-family:sans-serif; font-weight:bold;">Summary</a>
     <a href="#" onclick="openMenuManager(); toggleMenu();" style="color:#27ae60; text-decoration:none; font-size:24px; font-family:sans-serif; font-weight:bold;">Manage Menu</a>
+  </div>
+
+  <!-- Bottom Branding / Initials -->
+  <div style="margin-top:auto; text-align:center; padding-bottom:20px;">
+    <span style="color: rgba(255, 255, 255, 0.5); font-family: sans-serif; font-size: 16px; font-weight: bold; letter-spacing: 2px;">DV.INC</span>
   </div>
 </div>
 
